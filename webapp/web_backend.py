@@ -10,6 +10,7 @@ from http import HTTPStatus
 from rpc_client import RPCClient
 from rpc_middleware import RPC
 
+
 class WebsocketBackend(websocket.WebSocketHandler):
 
     def initialize(self, rpc):
@@ -20,15 +21,16 @@ class WebsocketBackend(websocket.WebSocketHandler):
 
         :param str reply_key: Reply key that identifies this request
         :param message: An object with the response
-        
+
         """
 
         message["reply_key"] = reply_key
         encoded_message = json.dumps(message)
         self.write_message(encoded_message)
 
-    def error_reply(self, reply_key, error, status_code=HTTPStatus.BAD_REQUEST):
-        """ Reply with an error object (just some sintax sugar) """
+    def error_reply(self, reply_key, error,
+                    status_code=HTTPStatus.BAD_REQUEST):
+        """ Reply with an error object (just some syntax sugar) """
 
         self.reply(reply_key, {"error": error, "error_code": status_code})
 
@@ -41,14 +43,15 @@ class WebsocketBackend(websocket.WebSocketHandler):
         message = json.loads(encoded_message)
 
         # every message should have a reply code
-        if not 'reply_key' in message:
+        if 'reply_key' not in message:
             self.error_reply('', "Reply key is missing")
             return
         reply = message['reply_key']
 
         # perform various correct checks
-        if not self._rpc: # this generally should not happen, but let it be
-            self.error_reply(reply, "Server is starting up", HTTPStatus.SERVICE_UNAVAILABLE)
+        if not self._rpc:  # this generally should not happen, but let it be
+            self.error_reply(reply, "Server is starting up",
+                             HTTPStatus.SERVICE_UNAVAILABLE)
             return
         if 'action' not in message or 'object' not in message:
             self.error_reply(reply, "Invalid request")
@@ -61,7 +64,7 @@ class WebsocketBackend(websocket.WebSocketHandler):
 
         # find a handler
         handler = self._rpc.get_handler(action=message['action'],
-                obj=message['object'])
+                                        obj=message['object'])
         if handler is None:
             self.error_reply(reply, "Handler not found")
             return
@@ -70,7 +73,8 @@ class WebsocketBackend(websocket.WebSocketHandler):
         try:
             result = yield handler(params)
         except Exception as e:
-            self.error_reply(reply, "Server error (%s)" % str(e), HTTPStatus.REQUEST_TIMEOUT)
+            self.error_reply(reply, "Server error (%s)" % str(e),
+                             HTTPStatus.REQUEST_TIMEOUT)
             return
 
         self.reply(reply, {"result": result})
@@ -81,7 +85,7 @@ if __name__ == "__main__":
     rpc = RPC(conn)
 
     app = web.Application([
-        (r'/ws', WebsocketBackend, {"rpc":rpc}),
+        (r'/ws', WebsocketBackend, {"rpc": rpc}),
         (r'/(.*)', web.StaticFileHandler, {'path': './static/'}),
     ])
     app.listen(8081)

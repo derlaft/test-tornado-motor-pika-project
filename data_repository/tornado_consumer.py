@@ -15,6 +15,7 @@ LOG_FORMAT = ('%(levelname) -10s %(asctime)s %(name) -30s %(funcName) '
               '-35s %(lineno) -5d: %(message)s')
 LOGGER = logging.getLogger(__name__)
 
+
 class RPCConsumer(RabbitMQ):
 
     """RPCConsumer will handle all the messages based by handlers.
@@ -162,7 +163,7 @@ class RPCConsumer(RabbitMQ):
 
         for queue in self._handlers.keys():
             self._consumer_tags += self._channel.basic_consume(self.on_message,
-                                                             queue=queue)
+                                                               queue=queue)
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)

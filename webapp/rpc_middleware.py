@@ -12,6 +12,7 @@ from http import HTTPStatus
 
 import traceback
 
+
 class RPC(object):
     """RPC is a middleware between frontend and service backends.
 
@@ -60,7 +61,8 @@ class RPC(object):
 
         try:
             # make sure only strings pass in there
-            # we don't want password={"$gt": null} in our mongo's queries, right?
+            # we don't want password={"$gt": null}
+            #  in our mongo's queries, right?
             filtered_params = dict(
                 # all fields are required
                 username=str(params['username']),
@@ -104,4 +106,3 @@ class RPC(object):
                 filtered_params)
 
         return rpc_result
-

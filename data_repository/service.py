@@ -41,12 +41,17 @@ class UserService:
                 raise Exception('User has not enough fields')
 
         # check email for correctness
-        if parseaddr(user['email'])[1] != user['email'] or '@' not in user['email']:
+        if parseaddr(user['email'])[1] != user['email'] or \
+           '@' not in user['email']:
+
             raise Exception('Invalid email')
 
         result = yield self.users.insert_one(user)
-        return {"success": result.inserted_id is not None, "inserted_id": str(result.inserted_id)}
-    
+        return {
+                "success": result.inserted_id is not None,
+                "inserted_id": str(result.inserted_id),
+                }
+
     @gen.coroutine
     def delete(self, params):
         """ Delete user from datastore.
@@ -72,13 +77,14 @@ class UserService:
     @gen.coroutine
     def retrieve(self, params):
         """ Get user from datastore
-        
+
         :param int limit: How much to retrieve
         :param int offset: Retrieve offset
         """
 
         limit = params.get('limit', 20)
-        if limit > 100: limit = 100
+        if limit > 100:
+            limit = 100
 
         offset = params.get('offset', 0)
 
@@ -90,7 +96,7 @@ class UserService:
             users = users[:-1]
 
         # replace ObjectID in result (it's not json-serialize-able)
-        # I would better filter out the whole result; but I've written 
+        # I would better filter out the whole result; but I've written
         # a lot already
         for user in users:
             user['_id'] = str(user['_id'])
