@@ -1,0 +1,12 @@
+version: "2"
+services:
+  mongo:
+      image: mongo:latest
+      ports:
+          - "27017:27017"
+  queue:
+      image: rabbitmq:alpine
+      environment:
+          - "RABBITMQ_ERLANG_COOKIE=testunsecurecookie"
+      ports:
+          - "5672:5672"
