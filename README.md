@@ -38,3 +38,4 @@ Web backend should listen at `localhost:8081`. Visit http://localhost:8081/index
 * This is written in a (shitty) English. I am not sure if you (a potential employer) can read this.
 * I must mention that service like this takes much less time, effort, pain and lines of code to be implemented in go. 
 * Please don't look at the front-end code; it's just a mess and copy-pasta from my other code.
+* Websocket protocol `reply_key` should be randomly generated. Sample frontend does not do that in order to simplify code.
