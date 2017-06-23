@@ -37,3 +37,4 @@ Web backend should listen at `localhost:8081`. Visit http://localhost:8081/index
 * Config files are not implemented, because this is trivial and lame. Anyway, the real environments use another complicated and bloated stuff like `etcd` and etc.
 * This is written in a (shitty) English. I am not sure if you (a potential employer) can read this.
 * I must mention that service like this takes much less time, effort, pain and lines of code to be implemented in go. 
+* Please don't look at the front-end code; it's just a mess and copy-pasta from my other code.
