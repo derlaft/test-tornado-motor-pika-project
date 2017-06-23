@@ -4,6 +4,7 @@ import time
 import functools
 import tornado
 import json
+import sys
 
 from tornado import gen
 from pika import adapters
@@ -168,8 +169,15 @@ class RPCConsumer(RabbitMQ):
 if __name__ == '__main__':
     logging.basicConfig(level=logging.INFO, format=LOG_FORMAT)
 
-    users = UserService('mongodb://localhost:27017')
-    worker = RPCConsumer('amqp://localhost:5672/', users)
+    mongoURL = 'mongodb://localhost:27017'
+    rabbitURL = 'amqp://localhost:5672/'
+
+    if len(sys.argv) == 3:
+        mongoURL = sys.argv[1]
+        rabbitURL = sys.argv[2]
+
+    users = UserService(mongoURL)
+    worker = RPCConsumer(rabbitURL, users)
 
     try:
         worker.run()

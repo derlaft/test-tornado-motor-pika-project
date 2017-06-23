@@ -9,7 +9,6 @@ from bson.objectid import ObjectId
 
 required_fields = ["username", "email", "password"]
 
-
 class UserService:
     def __init__(self, mongo_addr):
         """ Connect to database; create a shortcut for collection.
@@ -102,7 +101,7 @@ class UserService:
             user['_id'] = str(user['_id'])
 
         return dict(
-                users=users[:-1],
+                users=users,
                 has_more=has_more,
                 )
 

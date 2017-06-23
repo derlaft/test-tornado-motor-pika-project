@@ -1,12 +1,37 @@
 version: "2"
 services:
-  mongo:
-      image: mongo:latest
-      ports:
-          - "27017:27017"
-  queue:
-      image: rabbitmq:alpine
-      environment:
-          - "RABBITMQ_ERLANG_COOKIE=testunsecurecookie"
-      ports:
-          - "5672:5672"
+    # mongoDB
+    mongo:
+        image: mongo:latest
+        network_mode: "host"
+        ports:
+            - "127.0.0.1:27017:27017"
+
+    # rabbitMQ
+    queue:
+        image: rabbitmq:alpine
+        network_mode: "host"
+        environment:
+            - "RABBITMQ_ERLANG_COOKIE=testunsecurecookie"
+        ports:
+            - "127.0.0.1:5672:5672"
+
+    # web backend
+    webapp:
+        image: services
+        network_mode: "host"
+        restart: "always"
+        ports:
+            - "127.0.0.1:8081:8081"
+        command: "python3 /services/webapp/web_backend.py"
+        depends_on:
+            - queue
+
+    data_repository:
+        image: services
+        network_mode: "host"
+        restart: "always"
+        command: "python3 /services/data_repository/tornado_consumer.py"
+        depends_on:
+            - queue
+            - mongo

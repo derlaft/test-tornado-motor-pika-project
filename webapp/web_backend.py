@@ -4,6 +4,7 @@ import uuid
 import json
 import time
 import tornado
+import sys
 
 from tornado import gen, web, websocket
 from http import HTTPStatus
@@ -81,7 +82,11 @@ class WebsocketBackend(websocket.WebSocketHandler):
         return
 
 if __name__ == "__main__":
-    conn = RPCClient('amqp://localhost:5672/')
+    rabbitURL = 'amqp://localhost:5672/'
+    if len(sys.argv) == 2:
+        rabbitURL = sys.argv[1]
+
+    conn = RPCClient(rabbitURL)
     rpc = RPC(conn)
 
     app = web.Application([
