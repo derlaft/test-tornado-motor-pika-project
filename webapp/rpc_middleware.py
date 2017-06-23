@@ -1,9 +1,7 @@
 #!/usr/bin/env python
-import pika
 import uuid
 import json
 import time
-import tornado
 
 from common.tornado import RabbitMQ
 from tornado.queues import Queue
@@ -11,7 +9,6 @@ from tornado import gen, web, websocket
 from http import HTTPStatus
 
 import traceback
-
 
 class RPC(object):
     """RPC is a middleware between frontend and service backends.
