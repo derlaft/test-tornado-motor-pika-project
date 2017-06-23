@@ -1,5 +1,7 @@
 # test-tornado-motor-pika-project
 
+![architecture](https://pbs.twimg.com/media/BNELF1GCUAExynU.png)
+
 This is a sample python microservice project. It uses tornado, piko (for RabbitMQ queue), motor (async MongoDB library). 
 
 ### docker-compose.yaml
