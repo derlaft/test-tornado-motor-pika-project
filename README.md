@@ -11,7 +11,7 @@ Is used to run mongodb and rabbitmq (that are excepted to run at localhost at de
 ### How to run
 
 ```
-docker-compose up -d
+docker-compose up -d queue mongo
 export PYTHONPATH=$PWD
 python3 data_repository/service.py # run storage service
 python3 webapp/web_backend.py # run web backend service
